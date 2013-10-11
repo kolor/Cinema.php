@@ -2,7 +2,7 @@
 
 use Closure;
 use Laravel\Database;
-use Laravel\Paginator;
+use Paginator;
 use Laravel\Database\Query\Grammars\Postgres;
 use Laravel\Database\Query\Grammars\SQLServer;
 
@@ -520,7 +520,6 @@ class Query {
 			if ($segment != '_and_' and $segment != '_or_')
 			{
 				$this->where($segment, '=', $parameters[$index], $connector);
-
 				$index++;
 			}
 			// Otherwise, we will store the connector so we know how the next

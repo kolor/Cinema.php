@@ -1,0 +1,87 @@
+
+/*----------------*
+ * Typography
+ *................*/
+
+@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+@import url(http://fonts.googleapis.com/css?family=Denk+One);
+
+/*----------------*
+ * Common styles
+ *................*/
+
+div.short {width: 33%;}
+div.medium {width: 66%;}
+div.half {width:50%;}
+div.full {width: 100%;}
+div.center {margin: auto;}
+
+div.left {float: left;}
+div.right {float: right;}
+div.clear {overflow: hidden;}
+div.clr {clear:both;width:0;height:0;}
+div.hide {display: none;}
+
+.text-right {text-align: right}
+.text-left {text-align: left}
+
+.lt {float: left;}
+.rt {float: right;}
+.cntr {margin-left: 41%;}
+
+/*----------------*
+ * Common layouts
+ *................*/
+
+.wrap {width: 940px; margin: auto;}
+
+
+/*---------------------*
+ * Bootstrap overrides
+ *.....................*/
+
+body {line-height: 22px; font-size: 13px;}
+li {line-height: 22px;}
+.navbar-inner {border-radius: 0;}
+.navbar .brand {font-family: 'Denk One';}
+.navbar .nav .dropdown-toggle .caret {margin-top: 10px;}
+h1 {font-size: 32px;}
+h2 {font-size: 27px;}
+h3 {font-size: 22px;}
+h4 {font-size: 17px;}
+dt, dd {line-height: 24px;}
+
+.dropdown-menu .active > a, .dropdown-menu .active > a:hover {
+	background-color: #D98B07;
+	background-image: -moz-linear-gradient(center top , #D98B07, #C57E04);
+	background-image: -webkit-gradient(linear,0 0,0 100%,from(#D98B07),to(#C57E04))
+}
+
+/*------------------
+ * /home */
+
+div.news {padding: 10px 20px;}
+    
+/*------------------
+ * /account */
+
+
+p.bio {font-style: italic; margin-left: 33px;}
+img.img-polaroid {float: right;}
+.nav-list {width: 50%;}
+
+/*------------------
+ * /account/inbox */
+
+.friends div.person {border-bottom: 1px solid #DADADA; margin-bottom: 1px; background: #f2f2f2;}
+.friends div.person:hover {background: #e5e5e5; cursor: pointer;}
+.friends div.person.active {background: #C3D9EB;}
+.friends div.person img {margin-right: 5px;}
+
+.chat .messages {height: 400px; margin-bottom: 10px; border: 1px dashed #CBCBCB; overflow-y: auto;}
+.chat .messages > div {clear: both; padding: 8px; margin-bottom: 4px; width: 70%; border-radius: 5px;}
+.chat .messages > div.me {background: rgba(195, 217, 235, 0.5); float: left; text-align: left;}
+.chat .messages > div.he {background: #EEEEEE; float: right; text-align: right;}
+
+.chat textarea {width: 396px;}

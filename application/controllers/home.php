@@ -32,7 +32,9 @@ class Home_Controller extends Base_Controller {
 
 	public function action_index()
 	{
-		return View::make('home.index');
+		$data = array();
+		$data['news'] = News::order_by('created_at','desc')->take(1)->first();
+		return View::make('home.index', $data);
 	}
 
 }

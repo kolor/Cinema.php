@@ -26,5 +26,10 @@
 return array(
 
 	'docs' => array('handles' => 'docs'),
+	'bootstrapper' => array('auto' => true),
+	'adminify' => array('handles' => 'admin'),
 
+	'coolcaptcha' => array('auto' => true, 'handles' => 'coolcaptcha'),
+	'messages' => array('auto' => true),
+	'fireanbu' => array('auto' => true),
 );
