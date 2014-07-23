@@ -7,7 +7,7 @@ var Chat = {
 		$('#inbox .friends .person').click(Chat.load);
 		$('#inbox .chat textarea').keyup(function(e){
 			
-			if (e.which == 13 && e.shiftKey == false) {
+			if (e.which == 13 && e.shiftKey === false) {
 				var str = $(this).val().trim();
 				if (str !== "" && Chat.current !== 0) {
 					console.log(Chat.box.data('last'));
