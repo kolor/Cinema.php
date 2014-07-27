@@ -5,11 +5,12 @@ class Account_Controller extends Base_Controller
 	public $restful = true;
 	private $countries = array('United Kingdom','United States','Russia','France','Germany','Italy','Spain','Middle-East','South America','Asia');
 	private $languages = array('English','Russian','Deutch','French','Spanish','Italiano');
-
+	private $user = null;
+	
 	public function __construct()
 	{
 		$this->filter('before','auth');
-
+		$this->user = Auth::user();
 		//Event::listen('laravel.query', function($sql) {var_dump($sql);});
 	}
 
@@ -19,6 +20,8 @@ class Account_Controller extends Base_Controller
 
 	public function get_index()
 	{
+		Asset::add('dropzone','js/vendor/dropzone.js');
+		Asset::add('account','js/scripts/account.js');
 		$data = array();
 		$user = Auth::user();	
 		$acc = $user->account()->first();
@@ -38,10 +41,16 @@ class Account_Controller extends Base_Controller
 				'Country' => $this->countries[$acc->country],
 				'City' => $acc->city,
 				'Language' => $this->languages[$acc->language],
-				'Age' => $int->y
+				'Age' => $int->y,
 			);	
 
 			$data['acc']['bio'] = $acc->bio;
+			if (isset($acc->avatar)) {
+				$data['acc']['pic'] = '/uploads/avatars/'.$user->id.'/'.$acc->avatar;	
+			} else {
+				$data['acc']['pic'] = "http://placehold.it/140x140";
+			}
+			
 		}
 
 		# favorite movies table
@@ -120,6 +129,38 @@ class Account_Controller extends Base_Controller
 		}
 
 	}
+	
+	public function post_avatar() 
+	{
+		$user = Auth::user();
+		$input = Input::all();
+		$rules = array(
+		    'file' => 'image|max:3000',
+		);
+
+		$validation = Validator::make($input, $rules);
+
+		if ($validation->fails())
+		{
+			return Response::make($validation->errors->first(), 400);
+		}
+
+		$file = Input::file('file');
+
+        $extension = File::extension($file['name']);
+        $directory = path('public').'/uploads/avatars/'.$user->id;
+        $filename = sha1(time()).".{$extension}";
+        $upload_success = Input::upload('file', $directory, $filename);
+
+        if( $upload_success ) {
+        	$acc = $user->account()->first();
+        	$acc->avatar = $filename;
+        	$acc->save();
+        	return Response::json("OK", 200);
+        } else {
+        	return Response::json('NOK', 400);
+        }
+	}
 
 	#'''''''''''''''''''''''
 	# preferences
@@ -179,7 +220,20 @@ class Account_Controller extends Base_Controller
 	# page with list of contacts
 	public function get_friends()
 	{
-
+		$data = array();
+		$friends = User::find($this->user->id)->friends()->get();
+	
+		foreach($friends as $f) {
+			$user = $f->friend()->first();
+			$acc = $user->account()->first();
+			$data['friends'][] = array(
+				'id' => $user->id,
+				'username' => $user->username,
+				'avatar' => '/uploads/avatars/'.$user->id.'/'.$acc->avatar,
+				'full_name' => $acc->first_name.' '.$acc->last_name
+			);
+		}
+		return View::make('account.friends', $data);
 	}
 
 	# add, delete, edit contact list
@@ -211,12 +265,13 @@ class Account_Controller extends Base_Controller
 	{
 		$input = Input::get();
 		$user = Auth::user();
+		$since = $input['last']+1;
 		$msg = new Chat();
 		$msg->from = $user->id;
 		$msg->to = $input['to'];
-		$msg->text = $input['txt'];
+		$msg->message = $input['txt'];
 		$msg->save();
-		$data = Chat::retrieve($user->id, $input['to'], $input['last']);
+		$data = Chat::retrieve($user->id, $input['to'], $since);
 		return Response::json($data);
 	}
 

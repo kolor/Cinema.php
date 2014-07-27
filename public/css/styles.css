@@ -11,17 +11,17 @@
  * Common styles
  *................*/
 
-div.short {width: 33%;}
-div.medium {width: 66%;}
-div.half {width:50%;}
-div.full {width: 100%;}
-div.center {margin: auto;}
+.short {width: 33%;}
+.medium {width: 66%;}
+.half {width:50%;}
+.full {width: 100%;}
+.center {margin: auto;}
 
-div.left {float: left;}
-div.right {float: right;}
-div.clear {overflow: hidden;}
-div.clr {clear:both;width:0;height:0;}
-div.hide {display: none;}
+.left {float: left;}
+.right {float: right;}
+.clear {overflow: hidden;}
+.clr {clear:both;width:0;height:0;}
+.hide {display: none;}
 
 .text-right {text-align: right}
 .text-left {text-align: left}
@@ -67,8 +67,8 @@ div.news {padding: 10px 20px;}
  * /account */
 
 
-p.bio {font-style: italic; margin-left: 33px;}
-img.img-polaroid {float: right;}
+.bio {font-style: italic; margin-left: 33px;}
+.img-polaroid {float: right; width: 140px;}
 .nav-list {width: 50%;}
 
 /*------------------
@@ -85,3 +85,5 @@ img.img-polaroid {float: right;}
 .chat .messages > div.he {background: #EEEEEE; float: right; text-align: right;}
 
 .chat textarea {width: 396px;}
+
+#friends .person {float: left; padding: 10px; border: 1px solid #ddd;}

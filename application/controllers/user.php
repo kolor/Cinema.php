@@ -9,6 +9,20 @@ class User_Controller extends Base_Controller
 		$user = new Services\Movie();
 		var_dump($user);
 	}
+	
+	public function get_find($username)
+	{
+	    $user = User::where('username','LIKE', $username.'%')->first();
+	    if (isset($user)) {
+	        return Response::json(array(
+	            'id' => $user->id,
+	            'username' => $user->username
+	        ));    
+	    } else {
+	        return Response::json("NOK");
+	    }
+	    
+	}
 
 	#'''''''''''''''''''''''
 	# registration (signup)
@@ -92,9 +106,9 @@ class User_Controller extends Base_Controller
 			// send string to email
 			$url = URL::to_action('user@reset', array($user->id, $random));
 			Message::to($input['email'])->from('recover@cinemator.com','Cinemator')
-				->subject('Cinemator.com password recovery')
-				->body('Please use this link to reset your password: '.$url)
-				->send();
+			        ->subject('Cinemator.com password recovery')
+				    ->body('Please use this link to reset your password: '.$url)
+				    ->send();
 			return View::make('user.recover')->with('info','Confirmation has been sent to provided e-mail.');
 		} else {
 			Input::flash();
@@ -105,9 +119,9 @@ class User_Controller extends Base_Controller
 	public function get_reset($id, $hash)
 	{
 		$user = User::find($id);
-		if ($user->recover == $hash) {
+		if ($user->recover === $hash) {
 			Auth::login($id);
-			return Redirect::to('account/edit');
+			return Redirect::to('account/security');
 		} else {
 			return Redirect::to('home');
 		}

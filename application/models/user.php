@@ -8,6 +8,11 @@ class User extends Eloquent
 	{
 		return $this->has_one('Account');
 	}
+	
+	public function friends()
+	{
+	    return $this->has_many('Friend');
+	}
 
 	public function set_password($password) 
 	{

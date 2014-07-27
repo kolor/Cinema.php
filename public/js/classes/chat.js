@@ -18,7 +18,7 @@ var Chat = {
 				return false;
 			}
 		});
-		this.box = $('#inbox .chat .messages');
+		Chat.box = $('#inbox .chat .messages');
 	},
 
 	load: function()
@@ -28,16 +28,17 @@ var Chat = {
 		$('#inbox .friends .person.active').removeClass('active');
 		$(this).addClass('active');
 		Chat.current = id;
+		Chat.box.data('with', id);
 		// show spinning stuff
 		$.get('/account/message/'+id+'/last', Chat.append);
 	},
 
 	append: function(json)
 	{
-		Chat.box.data('last', json.last);
+		Chat.box.data('last', parseFloat(json.last));
 		for(var i in json.data) {
 			var o = json.data[i];
-			$('<div/>').addClass(o.class).text(o.text).prependTo(Chat.box);
+			$('<div/>').addClass(o.class).text(o.message).prependTo(Chat.box);
 		}
 	},
 

@@ -24,7 +24,8 @@
 		<hr />
 		@if (isset($acc))
 			<h3>Personal Information</h3>
-			{{ Image::polaroid('http://placehold.it/140x140') }}
+		    {{ Image::polaroid($acc['pic'], 'Avatar', array('class'=>'dropzone right', 'title' =>'drag new avatar or click to update')) }}
+			
 			{{ Typography::horizontal_dl($acc['info']) }}
 			<i class="icon-quote-left icon-2x pull-left icon-muted"></i><p class="bio">{{ $acc['bio'] }}</p>
 		@else 
