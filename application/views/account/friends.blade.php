@@ -26,11 +26,10 @@
 		<div id="friends">
 			@foreach ($friends as $v)
 				<div class="person" data-id="{{ $v['id'] }}">
-					<img width=100 src="{{ $v['avatar'] }}"><br/> <b>{{ $v['full_name'] }}</b> <small>({{ $v['username'] }})</small>
+					<img src="{{ $v['avatar'] }}"><br/> <b>{{ $v['full_name'] }}</b> <small>({{ $v['username'] }})</small>
 				</div>
 			@endforeach
 		</div>
 
 	</div>
 @endsection
-

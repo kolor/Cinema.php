@@ -9,9 +9,9 @@ class Account_Controller extends Base_Controller
 	
 	public function __construct()
 	{
+	    Asset::add('account.css','css/account.css');
 		$this->filter('before','auth');
 		$this->user = Auth::user();
-		//Event::listen('laravel.query', function($sql) {var_dump($sql);});
 	}
 
 	#'''''''''''''''''''''''
@@ -63,6 +63,50 @@ class Account_Controller extends Base_Controller
     	);
 		
 		return View::make('account.index', $data);
+	}
+	
+	public function get_view($user_id)
+	{
+	    $user = User::find($user_id);
+	    $acc = $user->account()->first();
+
+		# session messages
+		Session::has('info') ? $data['info'] = Session::get('info') :0;
+		Session::has('error') ? $data['error'] = Session::get('error') :0;
+
+		# account profile information
+		if ($acc) {
+			$now = new DateTime();
+			$int = $now->diff(new DateTime($acc->dob));
+
+			$data['acc']['info'] = array(
+				'Username' => $user->username,
+				'Real Name' => $acc->first_name.' '.$acc->last_name,
+				'Country' => $this->countries[$acc->country],
+				'City' => $acc->city,
+				'Language' => $this->languages[$acc->language],
+				'Age' => $int->y,
+			);	
+
+			$data['acc']['bio'] = $acc->bio;
+			if (isset($acc->avatar)) {
+				$data['acc']['pic'] = '/uploads/avatars/'.$user->id.'/'.$acc->avatar;	
+			} else {
+				$data['acc']['pic'] = "http://placehold.it/140x140";
+			}
+			
+		}
+
+		# favorite movies table
+		$data['movies_table'] = array(
+    		array('1', 'The Mist', '2007', '8.0 <small>(53000)</small>'),
+    		array('2', 'The Godfather', '1981', '9.0 <small>(53000)</small>'),
+    		array('3', 'Silent Hill', '2008', '6.2 <small>(53000)</small>'),
+    		array('4', 'Resident Evil', '2007', '8.0 <small>(53000)</small>'),
+    		array('5', 'The Green Mile', '2002', '8.0 <small>(53000)</small>'),
+    	);
+		
+		return View::make('account.view', $data);
 	}
 
 	public function get_edit()
@@ -220,6 +264,7 @@ class Account_Controller extends Base_Controller
 	# page with list of contacts
 	public function get_friends()
 	{
+	    Asset::add('friends','js/scripts/friend.js');
 		$data = array();
 		$friends = User::find($this->user->id)->friends()->get();
 	

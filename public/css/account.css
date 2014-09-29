@@ -1,0 +1,25 @@
+/*  /account & /account/view    */
+.bio {font-style: italic; margin-left: 33px;}
+.img-polaroid {float: right; width: 140px;}
+.nav-list {width: 50%;}
+
+
+/*  /account/inbox    */
+.friends div.person {border-bottom: 1px solid #DADADA; margin-bottom: 1px; background: #f2f2f2;}
+.friends div.person:hover {background: #e5e5e5; cursor: pointer;}
+.friends .person.active {background: #C3D9EB;}
+.friends div.person img {margin-right: 5px;}
+
+.chat .messages {height: 400px; margin-bottom: 10px; border: 1px dashed #CBCBCB; overflow-y: auto;}
+.chat .messages > div {clear: both; padding: 8px; margin-bottom: 4px; width: 70%; border-radius: 5px;}
+.chat .messages > .me {background: rgba(195, 217, 235, 0.5); float: left; text-align: left;}
+.chat .messages > .he {background: #EEEEEE; float: right; text-align: right;}
+
+.chat textarea {width: 396px;}
+
+
+/*   /account/friends     */
+#friends .person {float: left; padding: 10px; border: 1px solid #ddd; text-align: center; cursor: pointer;}
+#friends .person:hover {background: #EBFFD2;}
+#friends .person img {max-height: 100px; margin-bottom: 7px;}
+#friends .person b {font-size: 18px;}
