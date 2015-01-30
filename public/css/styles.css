@@ -6,19 +6,22 @@
 @import url(http://fonts.googleapis.com/css?family=Ubuntu);
 @import url(http://fonts.googleapis.com/css?family=Droid+Sans);
 @import url(http://fonts.googleapis.com/css?family=Denk+One);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed);
 
 /*----------------*
  * Common styles
  *................*/
 
+.tiny {width: 20%;}
 .short {width: 33%;}
 .medium {width: 66%;}
+.large {width: 75%;}
 .half {width:50%;}
 .full {width: 100%;}
 .center {margin: auto;}
 
-.left {float: left;}
-.right {float: right;}
+.left, .fl {float: left;}
+.right, .fr {float: right;}
 .clear {overflow: hidden;}
 .clr {clear:both;width:0;height:0;}
 .hide {display: none;}
@@ -41,16 +44,17 @@
  * Bootstrap overrides
  *.....................*/
 
-body {line-height: 22px; font-size: 13px;}
+body {line-height: 22px; font-size: 14px; font-family: 'Ubuntu';}
 li {line-height: 22px;}
-.navbar-inner {border-radius: 0;}
-.navbar .brand {font-family: 'Denk One';}
-.navbar .nav .dropdown-toggle .caret {margin-top: 10px;}
 h1 {font-size: 32px;}
 h2 {font-size: 27px;}
 h3 {font-size: 22px;}
 h4 {font-size: 17px;}
 dt, dd {line-height: 24px;}
+
+.navbar-inner {border-radius: 0;}
+.navbar .brand {font-family: 'Denk One';}
+.navbar .nav .dropdown-toggle .caret {margin-top: 10px;}
 
 .dropdown-menu .active > a, .dropdown-menu .active > a:hover {
 	background-color: #D98B07;
@@ -58,8 +62,17 @@ dt, dd {line-height: 24px;}
 	background-image: -webkit-gradient(linear,0 0,0 100%,from(#D98B07),to(#C57E04))
 }
 
-/*------------------
- * /home */
+.nav-list a {font-family: 'Roboto Condensed' ;}
 
-div.news {padding: 10px 20px;}
+
+/* * * * * * * 
+   front page 
+ * * * * * * */
+div.news { padding: 10px 20px; }
+
+
+/* * * * * * *
+  account area 
+ * * * * * * */
+
     

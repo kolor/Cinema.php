@@ -23,32 +23,31 @@ class Account_Controller extends Base_Controller
 		Asset::add('dropzone','js/vendor/dropzone.js');
 		Asset::add('account','js/scripts/account.js');
 		$data = array();
-		$user = Auth::user();	
-		$acc = $user->account()->first();
+		$account = $this->user->account()->first();
 
 		# session messages
 		Session::has('info') ? $data['info'] = Session::get('info') :0;
 		Session::has('error') ? $data['error'] = Session::get('error') :0;
 
 		# account profile information
-		if ($acc) {
+		if ($account) {
 			$now = new DateTime();
-			$int = $now->diff(new DateTime($acc->dob));
+			$int = $now->diff(new DateTime($account->dob));
 
-			$data['acc']['info'] = array(
-				'Username' => $user->username,
-				'Real Name' => $acc->first_name.' '.$acc->last_name,
-				'Country' => $this->countries[$acc->country],
-				'City' => $acc->city,
-				'Language' => $this->languages[$acc->language],
+			$data['account']['info'] = array(
+				'Username' => $this->user->username,
+				'Real Name' => $account->first_name.' '.$account->last_name,
+				'Language' => $this->languages[$account->language],
+				'Country' => $this->countries[$account->country],
+				'City' => $account->city,
 				'Age' => $int->y,
 			);	
 
-			$data['acc']['bio'] = $acc->bio;
-			if (isset($acc->avatar)) {
-				$data['acc']['pic'] = '/uploads/avatars/'.$user->id.'/'.$acc->avatar;	
+			$data['account']['bio'] = $account->bio;
+			if (isset($account->avatar)) {
+				$data['account']['pic'] = '/uploads/avatars/'.$this->user->id.'/'.$account->avatar;	
 			} else {
-				$data['acc']['pic'] = "http://placehold.it/140x140";
+				$data['account']['pic'] = 'http://www.gravatar.com/avatar/'.md5($this->user->email).'?d=retro&s=150';
 			}
 			
 		}
@@ -68,31 +67,32 @@ class Account_Controller extends Base_Controller
 	public function get_view($user_id)
 	{
 	    $user = User::find($user_id);
-	    $acc = $user->account()->first();
+	    $account = $user->account()->first();
 
 		# session messages
 		Session::has('info') ? $data['info'] = Session::get('info') :0;
 		Session::has('error') ? $data['error'] = Session::get('error') :0;
 
 		# account profile information
-		if ($acc) {
+		if ($account) {
 			$now = new DateTime();
-			$int = $now->diff(new DateTime($acc->dob));
+			$int = $now->diff(new DateTime($account->dob));
 
-			$data['acc']['info'] = array(
+			$data['account']['info'] = array(
 				'Username' => $user->username,
-				'Real Name' => $acc->first_name.' '.$acc->last_name,
-				'Country' => $this->countries[$acc->country],
-				'City' => $acc->city,
-				'Language' => $this->languages[$acc->language],
+				'Real Name' => $account->first_name.' '.$account->last_name,
+				'Language' => $this->languages[$account->language],
+				'Country' => $this->countries[$account->country],
+				'City' => $account->city,
 				'Age' => $int->y,
 			);	
 
-			$data['acc']['bio'] = $acc->bio;
-			if (isset($acc->avatar)) {
-				$data['acc']['pic'] = '/uploads/avatars/'.$user->id.'/'.$acc->avatar;	
+			$data['account']['bio'] = $account->bio;
+			if (isset($account->avatar)) {
+				$data['account']['pic'] = '/uploads/avatars/'.$user->id.'/'.$account->avatar;	
 			} else {
-				$data['acc']['pic'] = "http://placehold.it/140x140";
+				//$data['acc']['pic'] = "http://placehold.it/140x140";
+				$data['account']['pic'] = 'http://www.gravatar.com/avatar/'.md5($this->user->email).'?d=retro&s=150';
 			}
 			
 		}
@@ -113,9 +113,9 @@ class Account_Controller extends Base_Controller
 	{
 		$user = Auth::user();
 		$data = array();
-		$acc = $user->account()->first();
-		if ($acc) {
-			$data['account'] = $acc;
+		$account = $user->account()->first();
+		if ($account) {
+			$data['account'] = $account;
 		} else {
 			$data['account'] = new Account();
 		}
@@ -132,22 +132,22 @@ class Account_Controller extends Base_Controller
 		);
 		$v = Validator::make($input, $rules);
 		if ($v->fails()) {
-			$acc = json_decode(json_encode($input), FALSE);
+			$account = json_decode(json_encode($input), FALSE);
 			return View::make('account.edit', array(
 				'errors'=>$v->errors, 
-				'account'=>$acc,
+				'account'=>$account,
 				'countries'=>$this->countries,
 				'languages'=>$this->languages
 			));
 		} else {
 			$user = Auth::user();
-			$acc = $user->account()->first();
-			if (!$acc) {
-				$acc = new Account();
-				$acc->user_id = $user->id;
+			$account = $user->account()->first();
+			if (!$account) {
+				$account = new Account();
+				$account->user_id = $user->id;
 			}
-			$acc->fill($input);
-			$acc->save();
+			$account->fill($input);
+			$account->save();
 			Session::flash('info','Your profile has been saved.');
 			return Redirect::to('account');
 		}
@@ -197,9 +197,9 @@ class Account_Controller extends Base_Controller
         $upload_success = Input::upload('file', $directory, $filename);
 
         if( $upload_success ) {
-        	$acc = $user->account()->first();
-        	$acc->avatar = $filename;
-        	$acc->save();
+        	$account = $user->account()->first();
+        	$account->avatar = $filename;
+        	$account->save();
         	return Response::json("OK", 200);
         } else {
         	return Response::json('NOK', 400);
@@ -239,85 +239,6 @@ class Account_Controller extends Base_Controller
 	public function post_sharing()
 	{
 
-	}
-
-	#'''''''''''''''''''''''
-	# other profile related
-	#.......................
-
-	public function get_inbox()
-	{
-		Asset::add('chat','js/classes/chat.js');
-		Asset::add('inbox','js/scripts/inbox.js');
-		$data = array();
-		$data['friends'] = array(
-			array('name'=>'Pavel Rizik','id'=>'2','nick'=>'owl'),
-			array('name'=>'Jelena Sendze','id'=>'3','nick'=>'delight'),
-			array('name'=>'Anton Melbardis','id'=>'4','nick'=>'ninja'),
-			array('name'=>'Aleksej Gudilin','id'=>'5','nick'=>'fmx'),
-			array('name'=>'Jurij Molcanov','id'=>'6','nick'=>'jurik'),
-			array('name'=>'Artur Pirozkov','id'=>'7','nick'=>'und')
-		);
-		return View::make('account.inbox', $data);
-	}
-
-	# page with list of contacts
-	public function get_friends()
-	{
-	    Asset::add('friends','js/scripts/friend.js');
-		$data = array();
-		$friends = User::find($this->user->id)->friends()->get();
-	
-		foreach($friends as $f) {
-			$user = $f->friend()->first();
-			$acc = $user->account()->first();
-			$data['friends'][] = array(
-				'id' => $user->id,
-				'username' => $user->username,
-				'avatar' => '/uploads/avatars/'.$user->id.'/'.$acc->avatar,
-				'full_name' => $acc->first_name.' '.$acc->last_name
-			);
-		}
-		return View::make('account.friends', $data);
-	}
-
-	# add, delete, edit contact list
-	public function post_friends()
-	{
-		return View::make('account.contacts');
-	}
-
-	public function get_wall()
-	{
-
-	}
-
-	public function post_wall()
-	{
-
-	}
-
-	# get conversation with $friend (ajax)
-	public function get_message($friend, $since)
-	{
-		$user = Auth::user();
-		$data = Chat::retrieve($user->id, $friend, $since);		
-		return Response::json($data);
-	}
-
-	# add message to conversation with $user
-	public function post_message()
-	{
-		$input = Input::get();
-		$user = Auth::user();
-		$since = $input['last']+1;
-		$msg = new Chat();
-		$msg->from = $user->id;
-		$msg->to = $input['to'];
-		$msg->message = $input['txt'];
-		$msg->save();
-		$data = Chat::retrieve($user->id, $input['to'], $since);
-		return Response::json($data);
 	}
 
 }

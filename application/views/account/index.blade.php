@@ -22,12 +22,12 @@
 		<h1>Your Profile</h1>
 		<p>{{ Typography::muted('This is how other users see you here.') }}</p>
 		<hr />
-		@if (isset($acc))
+		@if (isset($account))
 			<h3>Personal Information</h3>
-		    {{ Image::polaroid($acc['pic'], 'Avatar', array('class'=>'dropzone right', 'title' =>'drag new avatar or click to update')) }}
+		    {{ Image::polaroid($account['pic'], 'Avatar', array('class'=>'dropzone right', 'title' =>'drag new avatar or click to update')) }}
 			
-			{{ Typography::horizontal_dl($acc['info']) }}
-			<i class="icon-quote-left icon-2x pull-left icon-muted"></i><p class="bio">{{ $acc['bio'] }}</p>
+			{{ Typography::horizontal_dl($account['info']) }}
+			<i class="icon-quote-left icon-2x pull-left icon-muted"></i><p class="bio">{{ $account['bio'] }}</p>
 		@else 
 			{{ Typography::info(HTML::link('account/edit', 'Please fill in your profile information.')) }}
 		@endif

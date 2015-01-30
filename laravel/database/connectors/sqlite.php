@@ -20,7 +20,7 @@ class SQLite extends Connector {
 			return new PDO('sqlite::memory:', null, null, $options);
 		}
 
-		$path = path('storage').'database'.DS.$config['database'].'.sqlite';
+		$path = path('storage').'database'.DS.$config['database'];
 
 		return new PDO('sqlite:'.$path, null, null, $options);
 	}

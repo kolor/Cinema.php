@@ -19,15 +19,15 @@
 			{{ Alert::info($info) }}
 		@endif
 
-		<h1>{{ ucwords($acc['info']['Real Name']) }}</h1>
+		<h1>{{ ucwords($account['info']['Real Name']) }}</h1>
 		<p>{{ Typography::muted('This is how other users see you here.') }}</p>
 		<hr />
-		@if (isset($acc))
+		@if (isset($account))
 			<h3>Personal Information</h3>
-		    {{ Image::polaroid($acc['pic'], 'Avatar', array('class'=>'dropzone right', 'title' =>'drag new avatar or click to update')) }}
+		    {{ Image::polaroid($account['pic'], 'Avatar', array('class'=>'dropzone right', 'title' =>'drag new avatar or click to update')) }}
 			
-			{{ Typography::horizontal_dl($acc['info']) }}
-			<i class="icon-quote-left icon-2x pull-left icon-muted"></i><p class="bio">{{ $acc['bio'] }}</p>
+			{{ Typography::horizontal_dl($account['info']) }}
+			<i class="icon-quote-left icon-2x pull-left icon-muted"></i><p class="bio">{{ $account['bio'] }}</p>
 		@else 
 			<h3>User has not updated his profile yet ;(</h3>
 		@endif

@@ -53,7 +53,7 @@
 
 		echo Form::control_group(
 				Form::label('dob','Date of Birth'),
-				Form::text('dob', $account->dob, array('class'=>'caldendar')),
+				Form::date('dob', $account->dob, array('class'=>'calendar')),
 				($errors->first('dob'))?'error':'', Form::block_help($errors->first('dob'))
 		);	
 
